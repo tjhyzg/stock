@@ -1,0 +1,58 @@
+待实现功能：定位股票，basicinfo中的历史股价（合并新增和更新，是否需要自动更新）
+			批量更新功能（年度框的取舍）,载入图的添加，查询框的添加
+			股价更新后不跳转，留在当前页面	
+			“id”改“stockDataId”，传参数基本修改，有一些需要调整	
+			add_balancesheet_dialog.jsp等页面数据库的调整
+			新增只显示核心指标的页面，可以做成有个小+号，展开就是全页面的
+待解决问题：全部更新的中断，date类型更新时的“参数错误”，，FinanceSummary实体类精简及jxjjz的处理
+web.xml中encoding的值，如果与jsp页面顶端contentType中charset的值不一致，则会造成输入乱码
+hibernate.cfg.xml文件中添加C3P0配置，就不会出现hibernate回滚失败的错误
+
+20170501 stock_0124_170501	资产负债表96号位置新增“长期递延收益”条目，抓取排序增加一位
+20151213 stock_0124_151213  修改BalanceSheetAction.java清空链接及方法，并添加CashFlowAction.java，MarketHistoryAction.java，
+							ProfitStatementAction.java的清空链接及方法
+20151212 stock_0124_151212  加入BalanceSheetAction.java清空链接及方法（方法为批量删除单位）
+20151207 stock_0123_151207  整体编码改为utf8(建立数据库，要UTF-8格式)hbm.xml的table属性改成小写，配置在NAS上，运转顺利
+20151008 stock_0123_151008	重新添加com/tjhyzg/stock/web/clients/GetInfoClient.java文件，添加批量更新数据方法								
+20150124 stock_0123_150124 	将balancesheet、cashflow、profitstatement等方法的action及网页中的参数id，修改为stockDataId
+20150115 stock_0122_150115 	将findFinanceSummary中findFinanceSummary方法的stockDataId由string改为int
+20150104 stock_0122_150104 	将“更新”界面整合进“基本信息”界面,“财务信息”中加入下拉菜单		
+20141229 stock_0122_141229 	删除部分错误标记</td></tr>,估计</form>标记不能删除，否则会导致部分“自选股”“比较”按钮无法使用		
+20140925 stock_0122_140925  把序号、股票顺序、股票代码、股票名称类目隐藏起来
+20140612 stock_0121-140611	改变GetInfoClient.java中获取数据的方式，引入htmlParser
+20130922 stock_0121-130922	在mystock的index.jsp中添加“添加自选股”按钮及相应方法	
+20130918 stock_0121-130918	MyStock实体类精简,basicinfo中的历史股价新增及更新方法修改，在
+							WebRoot/balancesheet/add_balancesheet_dialog.jsp中添加进度条、添加股票代码、股票名称
+20130826 stock_0120 新增CashFlow.java实体类及对应的方法（获取现金流量表信息）
+					     新增Profitstatement.java实体类及对应的方法（获取利润表信息）
+					     新增MarketHistory.java实体类及对应的方法（获取历史股价信息）
+					     修改FinanceSummaryManagerImpl.java中的大部分方法  	
+					    新增 GetInfoClient.java中的getCashFlow，getProfitStatement、getMarketHistory方法
+					    修改并增加myStock.java中的stockCompare、stockCompareByYear、stockCompareByQuarterly方法	
+2013/07/20 stock_0118-2	修改/stock_0118-2/src/com/tjhyzg/stock/web/clients/GetInfoClient.java中的getBalanceSheet方法，
+						将获取到“--”字符的识别方法由判断首位是否为数字，暂时改为判断字符长度小于2，防止出现负数的情况
+2012/11/01 stock_0118-1	修改BalanceSheetAction.java中的addjxjjz方法，及FinanceSummary.java中的addCalculate
+						方法，修改FinanceSummaey.java实体类，添加stockData字段；在BalanceSheetManagerImpl中
+						添加getStockDataIdByIds()方法。
+2012/07/26 stock_0118 在MyStockAction.java红添加add方法，用于添加自选股。
+2012/07/13 stock_0117 在FinanceSummaryAction.java中添加findCompare方法，用于自动查找净现金价值大于现价的股票
+2012/06/30 stock_0116 基本完成basicinfo的相关功能
+					     重构StockDataAction中的全部更新方法
+2012/06/25 stock_0115-1 改变bbrq之后的版本，讲bbrq由Data类型改为string,加入financesummary.jsp全部计算功能
+2012/06/25 stock_0115 改变bbrq之前的版本，bbrq为date型，页面更新数据时，显示“参数错误”
+2012/06/13 stock_0114 完成资产负债表的全部计算（净现金价值）及搜索空条目（方便手工维护）功能
+					  重构BalanceSheetAction中的add及addAll的功能，使其能根据数据库表发现是否已存在更新信息，避免重复更新
+					  添加根据起始条目更新功能，方便恢复中断的更新
+2012/06/13 stock_0113-1 重构所有包含数值的表的数值类型，改为Double型
+						完成资产负债表中的全部更新链接						
+2012/06/13 stock_0113 个股管理界面添加输入股票Id，显示股票名称					    
+2012/06/13 stock_0112 改变个股管理布局，添加更新栏，添加“全部更新”功能连接
+					    添加BalanceSheet的更改及删除功能
+2012/06/14 stock_0111 初步完成资产负债表的部分数据的添加股票时自动更新；
+					    初步完成数据库生成模块类	
+					    初步完成根据init_datas.xml文件，初始化数据库
+2012/06/09 stock_0108 初步完成市场管理及股票管理
+2012/06/08 stock_0108 自定义分页类
+2012/06/07 stock_0107 完成机构分页结构
+2012/06/07 stock_0106 集中处理系统异常
+2012/06/06 stock_0105 按照OA教程，重新构建程序，股票市场管理业务逻辑基本完成

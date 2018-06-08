@@ -1,0 +1,38 @@
+20151206   <%@ page language="java" contentType="text/html; charset=gbk" pageEncoding="UTF-8"%>
+<!-- 
+charset=gbk则写入数据库不会有乱码，改为utf-8乱码
+ -->
+ 
+ UTF-8编码是什么？
+UTF-8 编码是一种被广泛应用的编码，这种编码致力于把全球的语言纳入一个统一的编码，目前已经将几种亚洲语言纳入。UTF 代表 UCS Transformation Format.
+UTF-8 采用变长度字节来表示字符，理论上最多可以到 6 个字节长度。UTF-8 编码兼容了 ASC II(0-127)， 也就是说 UTF-8 对于 ASC II 字符的编码是和 ASC II 一样的。对于超过一个字节长度的字符，才用以下编码规范：
+左边第一个字节1的个数表示这个字符编码字节的位数，例如两位字节字符编码样式为 为：110xxxxx 10xxxxxx； 三位字节字符的编码样式为：1110xxxx 10xxxxxx 10xxxxxx.；以此类推，六位字节字符的编码样式为：1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx。 xxx 的值由字符编码的二进制表示的位填入。只用最短的那个足够表达一个字符编码的多字节串。例如：
+Unicode 字符： 00 A9（版权符号） = 1010 1001， UTF-8 编码为：11000010 10101001 = 0x C2 0xA9; 字符 22 60 (不等于符号) = 0010 0010 0110 0000， UTF-8 编码为：11100010 10001001 10100000 = 0xE2 0x89 0xA0
+ 
+GBK编码是什么？
+GBK: 汉字国标扩展码,基本上采用了原来GB2312-80所有的汉字及码位，并涵盖了原Unicode中所有的汉字20902，总共收录了883个符号， 21003个汉字及提供了1894个造字码位。 Microsoft简体版中文Windows 95就是以GBK为内码，又由于GBK同时也涵盖了Unicode所有CJK汉字，所以也可以和Unicode做一一对应。
+GB码，全称是GB2312-80《信息交换用汉字编码字符集 基本集》，1980年发布，是中文信息处理的国家标准，在大陆及海外使用简体中文的地区（如新加坡等）是强制使用的唯一中文编码。P- Windows3.2和苹果OS就是以GB2312为基本汉字编码， Windows 95/98则以GBK为基本汉字编码、但兼容支持GB2312。GB码共收录6763个简体汉字、682个符号，其中汉字部分：一级字3755，以拼音排 序，二级字3008，以偏旁排序。该标准的制定和应用为规范、推动中文信息化进程起了很大作用。
+GB2312编码是什么？
+GB2312-80（简称GB2312或GB80）的全称为《信息交换用汉字编码字 符集—基本集》，由中国国家标准总局发布，于1981年5月实施。目前，通行于中国大陆和新加坡。
+字符必须编码后才能被计算机处理。计算机使用的缺省编码方式就是计算机的内码。早期 的计算机使用7位的ASCII编码，为了处理汉字，程序员设计了用于简体中文的GB2312和用于繁体中文的big5。
+GB2312(1980年)一共收录了7445个字符，包括6763个汉字和682 个其它符号。汉字区的内码范围高字节从B0-F7，低字节从A1-FE，占用的码位是72*94=6768。其中有5个空位是D7FA-D7FE。
+JSP pageEncoding和contentType属性
+
+JSP要经过两次的“编码”，第一阶段会用pageEncoding，第二 阶段会用utf-8至utf-8，第三阶段就是由Tomcat出来的网页， 用的是contentType。
+关于JSP页面中的pageEncoding和contentType两种属性的区 别：
+pageEncoding是jsp文件本身的编码
+contentType的charset是指服务器发送给客户端时的内容编码
+第一阶段是jsp编译 成.java，它会根据pageEncoding的设定读取jsp，结果是由指定的编码方案翻译成统一的UTF-8 JAVA源码（即.java），如果pageEncoding设定错了，或没有设定，出来的就是中文乱码。
+第二阶段是由JAVAC的JAVA源码至java byteCode的编译，不论JSP编写时候用的是什么编码方案，经过这个阶段的结果全部是UTF-8的encoding的java源码。
+JAVAC用UTF-8的encoding读取java源码，编译成UTF-8 encoding的二进制码（即.class），这是JVM对常数字串在二进制码（java encoding）内表达的规范。
+第三阶段是Tomcat（或其的application container）载入和执行阶段二的来的JAVA二进制码，输出的结果，也就是在客户端见到的，这时隐藏在阶段一和阶段二的参数 contentType就发挥了功效
+contentType的設定.
+pageEncoding 和contentType的预设都是 ISO8859-1. 而随便设定了其中一个, 另一个就跟着一样了(TOMCAT4.1.27是如此). 但这不是绝对的, 这要看各自JSPC的处理方式. 而pageEncoding不等于contentType, 更有利亚洲区的文字 CJKV系JSP网页的开发和展示, (例pageEncoding=GB2312 不等于 contentType=utf-8)。
+jsp文件不像.java，.java在被编译器读入的时候默认采用的是操作系统所 设定的locale所对应的编码。一般我们不管是在记事本还是在ue中写代码，如果没有经过特别转码的话，写出来的都是本地编码格式的内容。所以编译器采 用的方法刚好可以让虚拟机得到正确的资料。
+但是jsp文件不是这样，它没有这个默认转码过程，但是指定了 pageEncoding就可以实现正确转码了。
+举个例子: 
+<%@ page contentType="text/html;charset=utf-8" %>
+大都 会打印出乱码，因为我输入的“你好吗”是gbk的，但是服务器是否正确抓到“你好吗”不得而知。
+但是如果更改为 
+<%@ page contentType="text/html;charset=utf-8" pageEncoding="GBK"%>
+这样就服务器一定会是正确抓到“你好”了。

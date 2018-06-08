@@ -1,0 +1,5 @@
+建立数据库“stock”，字符集“utf-8”，字符集校对“不填”
+
+xdoclet-plugins-1.0.3  创建数据库，依赖ant
+apache-ant-1.6.5		创建hibernate脚本
+apache-tomcat-7.0.23
